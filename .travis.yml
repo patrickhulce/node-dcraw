@@ -1,0 +1,21 @@
+language: node_js
+notifications:
+  email: false
+cache:
+  directories:
+    - node_modules/
+    - test/fixtures/
+node_js:
+  - v7
+  - v6
+  - v5
+  - v4
+before_script:
+  - npm prune
+script:
+  - npm run test:lint
+  - npm run test:download
+  - npm run test:coverage
+after_success:
+  - cat ./coverage/lcov.info | coveralls || echo 'Failed to upload to coveralls...'
+  # - npm run semantic-release
