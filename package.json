@@ -3,7 +3,7 @@
   "description": "Dave Coffin's popular dcraw library callable from JavaScript.",
   "main": "./lib/index.js",
   "bin": {
-    "node-dcraw": "node ./bin/dcraw.js"
+    "node-dcraw": "./bin/dcraw.js"
   },
   "scripts": {
     "test": "xo ./lib/**/*.js && mocha --reporter spec --require test/bootstrap test/*.test.js test/**/*.test.js",
