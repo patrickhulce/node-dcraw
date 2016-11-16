@@ -10,6 +10,7 @@ node_js:
   - v6
 before_script:
   - npm prune
+  - npm install -g coveralls
 script:
   - npm run test:lint
   - npm run test:download
