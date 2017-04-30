@@ -1,46 +1,48 @@
-const fs = require('fs');
+/* globals defineTest */
+const fs = require('fs')
+const path = require('path')
 
-defineTest('index.js', function (lib) {
-  const d4sFile = __dirname + '/fixtures/d4s.nef';
-  const d610File = __dirname + '/fixtures/d610.nef';
-  const canondmarkii = __dirname + '/fixtures/1dmarkii.cr2';
-  const canon760d = __dirname + '/fixtures/760d.cr2';
-  const a7sii = __dirname + '/fixtures/a7sii.arw';
+defineTest('index.js', lib => {
+  const d4sFile = path.join(__dirname, '/fixtures/d4s.nef')
+  const d610File = path.join(__dirname, '/fixtures/d610.nef')
+  const canondmarkii = path.join(__dirname, '/fixtures/1dmarkii.cr2')
+  const canon760d = path.join(__dirname, '/fixtures/760d.cr2')
+  const a7sii = path.join(__dirname, '/fixtures/a7sii.arw')
 
-  describe('#extractThumbnail', function () {
-    it('should return a buffer', function () {
+  describe('#extractThumbnail', () => {
+    it('should return a buffer', () => {
       return lib.extractThumbnail(canondmarkii).then(buffer => {
-        buffer.should.be.an.instanceof(Buffer);
-      });
-    });
+        buffer.should.be.an.instanceof(Buffer)
+      })
+    })
 
-    it('should create specified the jpeg thumbnail file', function () {
-      const output = __dirname + '/data.jpg';
+    it('should create specified the jpeg thumbnail file', () => {
+      const output = path.join(__dirname, '/data.jpg')
       return lib.extractThumbnail(d610File, output).then(() => {
-        const contents = fs.readFileSync(output);
-        contents.should.be.an.instanceof(Buffer);
-        fs.unlinkSync(output);
-      });
-    });
+        const contents = fs.readFileSync(output)
+        contents.should.be.an.instanceof(Buffer)
+        fs.unlinkSync(output)
+      })
+    })
 
-    it('should handle multiple files at once in memory', function () {
+    it('should handle multiple files at once in memory', () => {
       return lib.extractThumbnail([
-        d4sFile, canon760d, a7sii
+        d4sFile, canon760d, a7sii,
       ]).then(buffers => {
-        buffers.should.have.length(3);
-        buffers.forEach(buffer => buffer.should.be.an.instanceof(Buffer));
-      });
-    });
+        buffers.should.have.length(3)
+        buffers.forEach(buffer => buffer.should.be.an.instanceof(Buffer))
+      })
+    })
 
-    it('should handle multiple files at once in files', function () {
-      const outputs = [__dirname + '/f1.jpg', __dirname + '/f2.jpg'];
+    it('should handle multiple files at once in files', () => {
+      const outputs = [path.join(__dirname, '/f1.jpg'), path.join(__dirname, '/f2.jpg')]
       return lib.extractThumbnail([d4sFile, d610File], outputs).then(() => {
         outputs.forEach(output => {
-          const contents = fs.readFileSync(output);
-          contents.should.be.an.instanceof(Buffer);
-          fs.unlinkSync(output);
-        });
-      });
-    });
-  });
-});
+          const contents = fs.readFileSync(output)
+          contents.should.be.an.instanceof(Buffer)
+          fs.unlinkSync(output)
+        })
+      })
+    })
+  })
+})
